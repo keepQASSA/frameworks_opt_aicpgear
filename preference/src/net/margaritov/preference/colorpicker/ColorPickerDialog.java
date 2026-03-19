@@ -18,7 +18,6 @@
 package net.margaritov.preference.colorpicker;
 
 import android.app.Dialog;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
@@ -56,7 +55,6 @@ public class ColorPickerDialog
 
     private OnColorChangedListener mListener;
 
-    private NotificationManager mNotificationManager;
     private boolean mPreviewLed = false;
     private boolean mDisableAlpha = true;
 
@@ -75,9 +73,6 @@ public class ColorPickerDialog
         getWindow().setFormat(PixelFormat.RGBA_8888);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setUp(color);
-        mNotificationManager = (NotificationManager)
-                context.getSystemService(Context.NOTIFICATION_SERVICE);
-
     }
 
     private void setUp(int color) {
@@ -142,7 +137,7 @@ public class ColorPickerDialog
         }
 
         if (mPreviewLed) {
-            startLedPreview(color);
+            // LED preview removed
         }
     }
 
@@ -162,7 +157,7 @@ public class ColorPickerDialog
          */
 
         if (mPreviewLed) {
-            startLedPreview(color);
+            // LED preview removed
         }
     }
 
@@ -217,9 +212,6 @@ public class ColorPickerDialog
         Bundle state = super.onSaveInstanceState();
         state.putInt("old_color", mOldColor.getColor());
         state.putInt("new_color", mNewColor.getColor());
-        if (mPreviewLed) {
-            stopLedPreview();
-        }
         return state;
     }
 
@@ -233,26 +225,13 @@ public class ColorPickerDialog
     @Override
     public void onStop() {
         super.onStop();
-        stopLedPreview();
     }
 
     public void setPreviewLed(boolean previewLed) {
         if (mPreviewLed != previewLed) {
             mPreviewLed = previewLed;
-            if (mPreviewLed) {
-                startLedPreview(mNewColor.getColor());
-            } else {
-                stopLedPreview();
-            }
+            // LED preview removed
         }
-    }
-
-    private void startLedPreview(int color) {
-        mNotificationManager.forceShowLedLight(color & 0xffffff);
-    }
-
-    private void stopLedPreview() {
-        mNotificationManager.forceShowLedLight(-1);
     }
 
 }
